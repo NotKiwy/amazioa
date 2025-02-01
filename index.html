@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мини-приложение</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-button active" data-tab="balance">Баланс</button>
+      <button class="tab-button" data-tab="leaders">Лидеры</button>
+    </div>
+
+    <div id="balance" class="tab-content active">
+      <h1>Ваш баланс: <span id="balance-amount">0 AMZ</span></h1>
+      <button id="earn-button" class="ios-button">Earn</button>
+      <p id="timer" class="hidden">Таймер: <span id="time-left">01:00:00</span></p>
+    </div>
+
+    <div id="leaders" class="tab-content">
+      <h1>Топ 100 лидеров</h1>
+      <ul id="leaderboard"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
