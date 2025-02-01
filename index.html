@@ -3,11 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мини-приложение</title>
+  <title>AMZ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div id="access-denied" class="access-denied hidden">
+    <div class="emoji">❌</div>
+    <div class="message">Access denied</div>
+    <div class="instruction">Use a Telegram bot <a href="t.me/amazioaBot">t.me/amazioaBot</a> to continue</div>
+  </div>
+
+  <div id="app" class="container hidden">
     <div class="tabs">
       <button class="tab-button active" data-tab="balance">Баланс</button>
       <button class="tab-button" data-tab="leaders">Лидеры</button>
