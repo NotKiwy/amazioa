@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AMZ</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazioa</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="access-denied" class="access-denied hidden">
-    <div class="emoji">❌</div>
-    <div class="message">Access denied</div>
-    <div class="instruction">Use a Telegram bot <a href="t.me/amazioaBot">t.me/amazioaBot</a> to continue</div>
-  </div>
+    <div class="container">
+        <h1>Amazioa</h1>
+        <nav>
+            <button onclick="showSection('earn')">Earn</button>
+            <button onclick="showSection('friends')">Friends</button>
+        </nav>
 
-  <div id="app" class="container hidden">
-    <div class="tabs">
-      <button class="tab-button active" data-tab="balance">Баланс</button>
-      <button class="tab-button" data-tab="leaders">Лидеры</button>
+        <!-- Вкладка Earn -->
+        <section id="earn" class="section active">
+            <h2>Earn</h2>
+            <p>Баланс: <span id="balanceAMZ">0</span> $AMZ</p>
+            <p>Заработок: <span id="earnPerHour">100</span> $AMZ/час</p>
+            <button onclick="upgradeEarn()">Улучшить</button>
+            <div class="tasks">
+                <h3>Задания</h3>
+                <ul>
+                    <li>Выложить историю с ботом</li>
+                    <li>Подписаться на канал</li>
+                    <li>Пригласить 5 друзей</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Вкладка Friends -->
+        <section id="friends" class="section hidden">
+            <h2>Friends</h2>
+            <div class="sub-sections">
+                <button onclick="showSubSection('myFriends')">My Friends</button>
+            </div>
+            <div id="myFriends" class="sub-section">
+                <h3>My Friends</h3>
+                <ul id="friendsList"></ul>
+            </div>
+        </section>
     </div>
-
-    <div id="balance" class="tab-content active">
-      <h1>Ваш баланс: <span id="balance-amount">0 AMZ</span></h1>
-      <button id="earn-button" class="ios-button">Earn</button>
-      <p id="timer" class="hidden">Таймер: <span id="time-left">01:00:00</span></p>
-    </div>
-
-    <div id="leaders" class="tab-content">
-      <h1>Топ 100 лидеров</h1>
-      <ul id="leaderboard"></ul>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
