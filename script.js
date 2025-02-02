@@ -1,87 +1,49 @@
-// Данные
-let balance = parseInt(localStorage.getItem('balance')) || 0;
-let timerInterval;
-const leaders = [];
+import { init, WebApp } from '@twa-dev/sdk';
 
-// Элементы
-const accessDenied = document.getElementById('access-denied');
-const app = document.getElementById('app');
-const balanceAmount = document.getElementById('balance-amount');
-const earnButton = document.getElementById('earn-button');
-const timerDisplay = document.getElementById('timer');
-const timeLeft = document.getElementById('time-left');
-const leaderboardList = document.getElementById('leaderboard');
+// Инициализация Telegram Mini App
+init();
 
-// Проверка на доступ через Telegram
-function checkAccess() {
-  const isTelegram = window.Telegram && window.Telegram.WebApp;
-  if (!isTelegram) {
-    accessDenied.classList.remove('hidden');
-    return false;
-  }
-  app.classList.remove('hidden');
-  return true;
+// Данные пользователя
+let user = {
+    id: null,
+    balanceAMZ: 0,
+    earnPerHour: 100,
+    level: 1,
+    friends: [],
+};
+
+// Получение данных пользователя из Telegram
+if (WebApp.initDataUnsafe.user) {
+    user.id = WebApp.initDataUnsafe.user.id;
+    console.log('Пользователь авторизован:', user.id);
+} else {
+    console.log('Пользователь не авторизован');
 }
 
-// Вкладки
-const tabButtons = document.querySelectorAll('.tab-button');
-const tabContents = document.querySelectorAll('.tab-content');
-
-tabButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const tab = button.dataset.tab;
-    tabButtons.forEach(b => b.classList.remove('active'));
-    tabContents.forEach(c => c.classList.remove('active'));
-    button.classList.add('active');
-    document.getElementById(tab).classList.add('active');
-  });
-});
-
-// Обновление баланса
-function updateBalance() {
-  balanceAmount.textContent = `${balance} AMZ`;
-  localStorage.setItem('balance', balance);
+// Показать раздел
+function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    document.getElementById(sectionId).classList.remove('hidden');
 }
 
-// Earn кнопка
-earnButton.addEventListener('click', startTimer);
-
-// Таймер
-function startTimer() {
-  if (timerInterval) return; // Уже запущен
-  earnButton.disabled = true;
-  timerDisplay.classList.remove('hidden');
-
-  let time = 3600; // 1 час в секундах
-  timerInterval = setInterval(() => {
-    time--;
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
-    timeLeft.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-    if (time <= 0) {
-      clearInterval(timerInterval);
-      balance += 100; // Начисляем монетки
-      updateBalance();
-      earnButton.disabled = false;
-      timerDisplay.classList.add('hidden');
+// Улучшение заработка
+function upgradeEarn() {
+    const cost = user.level * 100;
+    if (user.balanceAMZ >= cost) {
+        user.balanceAMZ -= cost;
+        user.level += 1;
+        user.earnPerHour = user.level * 100;
+        document.getElementById('earnPerHour').textContent = user.earnPerHour;
+        document.getElementById('balanceAMZ').textContent = user.balanceAMZ;
+        alert(`Уровень повышен до ${user.level}!`);
+    } else {
+        alert('Недостаточно $AMZ');
     }
-  }, 1000);
-}
-
-// Лидеры
-function updateLeaderboard() {
-  leaderboardList.innerHTML = '';
-  leaders.forEach((leader, index) => {
-    const li = document.createElement('li');
-    li.textContent = `${index + 1}. ${leader.name} - ${leader.score} AMZ`;
-    leaderboardList.appendChild(li);
-  });
 }
 
 // Инициализация
-if (checkAccess()) {
-  updateBalance();
-  updateLeaderboard();
-}
+document.getElementById('balanceAMZ').textContent = user.balanceAMZ;
+document.getElementById('earnPerHour').textContent = user.earnPerHour;
+showSection('earn');
